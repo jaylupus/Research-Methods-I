@@ -12,7 +12,7 @@ nocite: '@*'
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd("~/Documents/School/John Jay/Research Methods/Project")
+setwd("~/Documents/School/John Jay/Research Methods/Research-Methods-I")
 library(DBI)
 library(tidyverse)
 library(reshape2)
