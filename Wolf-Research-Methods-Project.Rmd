@@ -17,41 +17,49 @@ library(DBI)
 library(tidyverse)
 library(reshape2)
 library(stargazer)
+library(future)
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 
 # Read Pitchfork dataset
-con <- dbConnect(RSQLite::SQLite(), "./Datasets/pitchfork-database.sqlite")
-pitchfork <- dbReadTable(con, "reviews")
-genres <- dbReadTable(con, "genres")
-dbDisconnect(con)
+p4k_future <- future({
+  con <- dbConnect(RSQLite::SQLite(), "./Datasets/pitchfork-database.sqlite")
+  pitchfork <- dbReadTable(con, "reviews")
+  genres <- dbReadTable(con, "genres")
+  dbDisconnect(con)
 
-# Tidy Pitchfork dataset
-pitchfork <- pitchfork %>%
-  unique() %>%
-  mutate(pub_date = as.Date(pub_date))
+  # Tidy Pitchfork dataset
+  pitchfork <- pitchfork %>%
+    unique() %>%
+    mutate(pub_date = as.Date(pub_date))
+  
+  genres <- genres %>%
+    unique %>%
+    pivot_wider(id_cols = reviewid, names_from = genre, values_from = genre) %>%
+    select(-matches("NA")) %>%
+    rename(
+      pop = `pop/r&b`,
+      country = `folk/country`
+    )
+  
+  genres[2:10] <- lapply(genres[2:10], function(x) (x != "NULL"))
+  
+  merge(pitchfork, genres, by = "reviewid")
+})
 
-genres <- genres %>%
-  unique %>%
-  pivot_wider(id_cols = reviewid, names_from = genre, values_from = genre) %>%
-  select(-matches("NA")) %>%
-  rename(
-    pop = `pop/r&b`,
-    country = `folk/country`
-  )
-
-genres[2:10] <- lapply(genres[2:10], function(x) (x != "NULL"))
-
-pitchfork <- merge(pitchfork, genres, by = "reviewid")
-
+pitchfork <- value(p4k_future)
+  
 # Read Billboard dataset
-con2 <- dbConnect(RSQLite::SQLite(), "./Datasets/billboard-200.db")
-billboard <- dbReadTable(con2, "albums")
-dbDisconnect(con2)
-
+bb_future <- future({
+  con2 <- dbConnect(RSQLite::SQLite(), "./Datasets/billboard-200.db")
+  billboard <- dbReadTable(con2, "albums")
+  dbDisconnect(con2)
+  return(billboard)
+})  
+  
 # Tidy Billboard dataset
-billboard <- billboard %>%
+billboard <- value(bb_future) %>%
   slice(2:n()) %>%
   rename(title = album) %>%
   mutate(
