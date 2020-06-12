@@ -146,13 +146,12 @@ pf_years <- pitchfork %>%
 
 summary(pf_years$rock)
 
-shares <- pf_years %>%
+pf_years %>%
   select(-total) %>%
-  melt(id.vars = "pub_year")
-
-ggplot(data = shares, mapping = aes(x = pub_year)) +
-  geom_line(aes(y = value, color = variable)) +
-  labs(x = "year", y = "share of total reviews published")
+  melt(id.vars = "pub_year") %>%
+  ggplot(mapping = aes(x = pub_year)) +
+    geom_line(aes(y = value, color = variable)) +
+    labs(x = "year", y = "share of total reviews published")
 ```
 
 
@@ -174,6 +173,14 @@ stargazer(growth_means)
 
 ```{r}
 # box plot scores
+pitchfork %>%
+  select(score, electronic:global) %>%
+  pivot_longer(-score, names_to = "genre", values_to = "value") %>%
+  filter(value == TRUE) %>%
+  select(-value) %>%
+  ggplot(aes(genre, score)) +
+    geom_boxplot()
+
 ```
 
 
