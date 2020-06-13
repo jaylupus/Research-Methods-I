@@ -127,9 +127,7 @@ ggplot(data = bnm, aes(x = score)) +
   geom_histogram(binwidth = .5)
 ```
 
-"Rock" has consistently dominated the distribution of genres, though its share of total reviews fell from a majority of 65.2% in 2000 to a strong plurality of 34.2% in 2016.
-
-## graph share of each genre by year
+"Rock" has consistently dominated the distribution of genres, though its share of total reviews fell from a majority of 65.2% in 2000 to a strong plurality of 34.2% in 2016 (falling an average of 3.2% each year). By contrast, "rap" grew from 1.3% to 15% over the same period (an average of 22.5% year-over-year), and "pop/R&B" from 4.4% to 11.1% (8.9% average yearly growth).
 
 ```{r}
 pf_years <- pitchfork %>%
@@ -157,18 +155,16 @@ pf_years %>%
 
 ```{r}
 
-pf_years_growth <- pf_years %>%
-  mutate(
-    across(electronic:global, ~ (.x - lag(.x))/lag(.x))
-  )
+pf_years %>%
+  select(-pub_year, -total) %>%
+  mutate_all(
+    ~ (.x - lag(.x))/lag(.x)
+  ) %>%
+  summarise_all(mean, na.rm = TRUE) %>%
+  pivot_longer(everything(), names_to = "genre", values_to = "mean_growth") %>%
+  ggplot(aes(x = genre, y = mean_growth)) +
+  geom_col()
 
-growth_means <- pf_years_growth %>% 
-  select(c(3:11)) %>%
-  colMeans(na.rm = TRUE)
-
-## make bar chart of growth rates
-
-stargazer(growth_means)
 ```
 
 ```{r}
