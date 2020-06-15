@@ -8,6 +8,8 @@ output:
     latex_engine:
       xelatex
 bibliography: Music Reviews.bib
+nocite: |
+  @hlavacStargazerWellformattedRegression2018
 ---
 
 ```{r setup, include=FALSE}
@@ -18,6 +20,7 @@ library(tidyverse)
 library(reshape2)
 library(stargazer)
 library(future)
+library(panelvar)
 ```
 
 ```{r message=FALSE}
