@@ -175,8 +175,6 @@ pitchfork %>%
     geom_boxplot()
 ```
 
-
-
 ```{r}
 
 pf_charted <- pitchfork %>%
@@ -188,49 +186,18 @@ pf_charted <- pitchfork %>%
     .groups = "drop"
     ) %>%
   mutate(
-    charted = charted / total
+    charted_share = charted / total
     ) %>%
   select(-total)
+
+pf_charted %>%
+  ggplot(aes(pub_year, charted_share)) +
+    geom_line()
 ```
 
 Adding data from the _Billboard_ 200, we see that the proportion of coverage given to _Billboard_-charting albums rose from 8% in 1999 to 18% in 2016.
 
-* proportion of charting albums covered by pitchfork
-* limit to albums charting above a certain rank
-* disaggregate by time of coverage: whether the album charted before or after publication
-* look at weeks before/after publication
 * billboard changed formula december 2014
-
-* [Acoustic and meta features of albums and songs on the Billboard 200 (1963--2019)](https://components.one/datasets/billboard-200/)
-
-```{r}
-# data to add: median scores, chart positions, weeks charted
-
-    # pop_charted = sum(charted[pitchfork$pop], na.rm = TRUE),
-    # bnm = sum(best_new_music, na.rm = TRUE),
-    # bnm_pop = sum(best_new_music[pitchfork$pop], na.rm = TRUE),
-    # bnm_charted = sum(best_new_music[pitchfork$charted], na.rm = TRUE),
-    # med_score = median(score, na.rm = TRUE),
-    # med_pop = median(score[pitchfork$pop], na.rm = TRUE),
-    # med_charted = median(score[pitchfork$charted], na.rm = TRUE)
-
-  #   charted_share = charted / total,
-  #   chart_growth = (charted_share - lag(charted_share))/lag(charted_share),
-  #   bnm_pop_share = bnm_pop / bnm,
-  #   bnm_charted_share = bnm_charted / bnm
-
-# make chart
-
-
-# meds_long <- pf_years %>%
-#   select(pub_year, med_pop, med_charted, med_score) %>%
-#   melt(id.vars = "pub_year", data.vars = c("med_pop", "med_charted", "med_score"))
-# 
-# ggplot(data = meds_long, mapping = aes(x = pub_year)) +
-#   geom_line(aes(y = value, linetype = variable)) +
-#   labs(x = "year", y = "median score")
-
-```
 
 # Econometric Models and Estimation Methods
 
@@ -246,8 +213,6 @@ $$
 
 ```{r}
 # lm(score ~ weeks * electronic * metal * rock * rap * experimental * pop * country * jazz * global * reviewed_first, merged)
-
-# account for different efforts by artist?
 ```
 
 
