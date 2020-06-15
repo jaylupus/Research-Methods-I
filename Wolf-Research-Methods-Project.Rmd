@@ -110,14 +110,14 @@ For Peterson and Kern, this meant that listeners of "highbrow" classical and ope
 This paper uses a dataset of 18,389 album reviews published on Pitchfork from 1999 through 2016 ([@conaway18393Pitchfork2017]). The publication and its authors rate albums on a decimal scale, from 0.0 to 10.0; chosen releases are also assigned the tag "Best New Music." Albums are tagged with the following genre labels: "electronic," "metal," "rock," "rap," "experimental," "pop/r&b," "folk/country," "jazz," and "global."
 
 ```{r results="asis"}
-stargazer(pitchfork[5], title = "Album review scores")
+stargazer(pitchfork[5], title = "Album review scores", header = FALSE)
 
 ggplot(data = pitchfork, aes(x = score)) +
   geom_histogram(binwidth = .5)
 
 bnm <- pitchfork %>% filter(best_new_music == TRUE)
 
-stargazer(bnm[5], title = "Best New Music scores")
+stargazer(bnm[5], title = "Best New Music scores", header = FALSE)
 
 ggplot(data = bnm, aes(x = score)) +
   geom_histogram(binwidth = .5)
