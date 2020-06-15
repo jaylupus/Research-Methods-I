@@ -1,5 +1,6 @@
 ---
-title: "TITLETK"
+title: "Populist Pitchforks"
+subtitle: "Charting the Poptimist Turn in Rock Media"
 author: "Jonah Wolf"
 date: "5/28/2020"
 output:
