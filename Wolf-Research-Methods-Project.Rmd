@@ -109,8 +109,6 @@ Beck drolly charts the broadening of Pitchfork's coverage beyond white suburban 
 
 This paper uses a dataset of 18,389 album reviews published on Pitchfork from 1999 through 2016 ([@Conaway 2017]). The publication and its authors rate albums on a decimal scale, from 0.0 to 10.0; chosen releases are also assigned the tag "Best New Music." Albums are tagged with the following genre labels: "electronic\", \"metal\", \"rock\", \"rap\", \"experimental\", \"pop/r&b\", \"folk/country\", \"jazz\", and \"global."
 
-The mean overall score is 7.006, and the median 7.2. For "Best New Music" releases, the mean is 8.676 and median 8.6.^[These figures are depressed somewhat, as the "Best New Music" label is sometimes applied across a group of differently scored albums by the same artist. Weezer's 2010 album _Death to False Metal_, for example, was reviewed alongside a reissue of their classic _Pinkerton_, and so received a "Best New Music" tag despite its score of 3.5 ([@Cohen 2010]).]
-
 ```{r}
 paste(colnames(genres[-1]), collapse = '", "')
 
@@ -127,7 +125,7 @@ ggplot(data = bnm, aes(x = score)) +
   geom_histogram(binwidth = .5)
 ```
 
-"Rock" has consistently dominated the distribution of genres, though its share of total reviews fell from a majority of 65.2% in 2000 to a strong plurality of 34.2% in 2016 (falling an average of 3.2% each year). By contrast, "rap" grew from 1.3% to 15% over the same period (an average of 22.5% year-over-year), and "pop/R&B" from 4.4% to 11.1% (8.9% average yearly growth).
+The mean overall score is 7.006, and the median 7.2. For "Best New Music" releases, the mean is 8.676 and median 8.6.^[These figures are depressed somewhat, as the "Best New Music" label is sometimes applied across a group of differently scored albums by the same artist. Weezer's 2010 album _Death to False Metal_, for example, was reviewed alongside a reissue of their classic _Pinkerton_, and so received a "Best New Music" tag despite its score of 3.5 ([@Cohen 2010]).]
 
 ```{r}
 pf_years <- pitchfork %>%
@@ -142,8 +140,6 @@ pf_years <- pitchfork %>%
     across(electronic:global, ~ .x / total)
     )
 
-summary(pf_years$rock)
-
 pf_years %>%
   select(-total) %>%
   melt(id.vars = "pub_year") %>%
@@ -151,7 +147,6 @@ pf_years %>%
     geom_line(aes(y = value, color = variable)) +
     labs(x = "year", y = "share of total reviews published")
 ```
-
 
 ```{r}
 
@@ -176,11 +171,9 @@ pitchfork %>%
   select(-value) %>%
   ggplot(aes(genre, score)) +
     geom_boxplot()
-
 ```
 
-
-* [Acoustic and meta features of albums and songs on the Billboard 200 (1963--2019)](https://components.one/datasets/billboard-200/)
+"Rock" has consistently dominated the distribution of genres, though its share of total reviews fell from a majority of 65.2% in 2000 to a strong plurality of 34.2% in 2016 (falling an average of 3.2% each year). By contrast, "rap" grew from 1.3% to 15% over the same period (an average of 22.5% year-over-year), and "pop/R&B" from 4.4% to 11.1% (8.9% average yearly growth).
 
 ```{r}
 
@@ -196,7 +189,18 @@ pf_charted <- pitchfork %>%
     charted = charted / total
     ) %>%
   select(-total)
+```
 
+Adding data from the _Billboard_ 200, we see that the proportion of coverage given to _Billboard_-charting albums rose from 8% in 1999 to 18% in 2016.
+
+* proportion of charting albums covered by pitchfork
+* limit to albums charting above a certain rank
+* disaggregate by time of coverage: whether the album charted before or after publication
+* look at weeks before/after publication
+
+* [Acoustic and meta features of albums and songs on the Billboard 200 (1963--2019)](https://components.one/datasets/billboard-200/)
+
+```{r}
 # data to add: median scores, chart positions, weeks charted
 
     # pop_charted = sum(charted[pitchfork$pop], na.rm = TRUE),
