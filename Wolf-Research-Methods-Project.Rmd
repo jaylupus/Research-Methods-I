@@ -171,11 +171,11 @@ pitchfork %>%
   pivot_longer(-score, names_to = "genre", values_to = "value") %>%
   filter(value == TRUE) %>%
   select(-value) %>%
-  ggplot(aes(genre, score)) +
+  ggplot(scores_genres, aes(genre, score)) +
     geom_boxplot()
 ```
 
-
+* describe median scores
 
 ```{r}
 
