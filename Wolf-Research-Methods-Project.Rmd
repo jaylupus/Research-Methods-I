@@ -3,10 +3,7 @@ title: "Populist Pitchforks"
 subtitle: "Charting the Poptimist Turn in Rock Media"
 author: "Jonah Wolf"
 date: "5/28/2020"
-output:
-  pdf_document:
-    latex_engine:
-      xelatex
+output: html_document
 bibliography: Music Reviews.bib
 nocite: |
   @hlavacStargazerWellformattedRegression2018
@@ -14,7 +11,6 @@ nocite: |
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-setwd("~/Documents/School/John Jay/Research Methods/Research-Methods-I")
 library(DBI)
 library(tidyverse)
 library(reshape2)
@@ -200,25 +196,11 @@ pf_charted %>%
 
 Adding data from the _Billboard_ 200, we see that the proportion of coverage given to _Billboard_-charting albums rose from 8% in 1999 to 18% in 2016.
 
-* billboard changed formula december 2014
-
 # Econometric Models and Estimation Methods
-
-$$
-\begin{aligned}
-  score = f(
-    &weeks * electronic * metal * rock * rap * experimental * pop * country + \\
-    &reviewed.first * electronic * metal * rock * rap * experimental * pop * country + \\
-    &rank.peak * electronic * metal * rock * rap * experimental * pop * country + \\
-    &electronic + metal + rock + rap + experimental + pop + country)
-\end{aligned}
-$$
 
 ```{r}
 # lm(score ~ weeks * electronic * metal * rock * rap * experimental * pop * country * jazz * global * reviewed_first, merged)
 ```
-
-
 
 # Results
 
