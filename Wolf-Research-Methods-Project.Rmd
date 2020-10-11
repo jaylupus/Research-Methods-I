@@ -2,7 +2,7 @@
 title: "Populist Pitchforks"
 subtitle: "Charting the Poptimist Turn in Rock Media"
 author: "Jonah Wolf"
-date: "5/28/2020"
+date: "6/15/2020"
 output: html_document
 bibliography: Music Reviews.bib
 nocite: |
